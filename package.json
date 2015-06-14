@@ -1,0 +1,41 @@
+{
+  "name": "click-parser",
+  "version": "1.0.0",
+  "description": "Extract data from Ubuntu's click packages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhdouglass/click-parser.git"
+  },
+  "keywords": [
+    "click",
+    "ubuntu",
+    "debian",
+    "package",
+    "deb"
+  ],
+  "author": "Brian Douglass",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/bhdouglass/click-parser/issues"
+  },
+  "homepage": "https://github.com/bhdouglass/click-parser#readme",
+  "dependencies": {
+    "ar": "0.0.1",
+    "node-uuid": "^1.4.3",
+    "path": "^0.11.14",
+    "streamifier": "^0.1.1",
+    "tar": "^2.1.1",
+    "tar-stream": "^1.1.5",
+    "uuid": "^2.0.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jshint": "^1.11.0",
+    "gulp-mocha": "^2.1.1",
+    "jshint-stylish": "^2.0.0"
+  }
+}
