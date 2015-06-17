@@ -10,7 +10,11 @@ describe('click-parser', function(){
                 }
 
                 assert.deepEqual(data, {
-                    types: ['application'],
+                    architecture: 'all',
+                    desktopFiles: ['./test-qml.desktop'],
+                    framework: 'ubuntu-sdk-15.04',
+                    icon: null,
+                    iconpath: 'test-qml.png',
                     manifest: {
                         architecture: 'all',
                         description: 'description of test-qml',
@@ -27,8 +31,12 @@ describe('click-parser', function(){
                         title: 'test-qml',
                         version: '0.1'
                     },
-                    desktopFiles: ['./test-qml.desktop'],
-                    iconpath: 'test-qml.png'
+                    name: 'test-qml.bhdouglass',
+                    title: 'test-qml',
+                    types: ['application'],
+                    version: '0.1',
+                    webappInject: false,
+                    webappProperties: null,
                 });
                 done();
             });
@@ -69,6 +77,7 @@ describe('click-parser', function(){
                 }
 
                 assert.deepEqual(data.types, ['webapp']);
+                assert.equal(data.webappInject, true);
                 done();
             });
         });

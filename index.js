@@ -56,6 +56,20 @@ function parseData(fileData, data, icon, callback) {
         if (header.name == './meta/package.yaml') {
             data.types.push('snappy');
         }
+        else if (header.name == './webapp-properties.json') {
+            stream.on('data', function(fdata) {
+                var webappProperties = fdata.toString();
+                if (isJson(webappProperties)) {
+                    webappProperties = JSON.parse(webappProperties);
+                    data.webappProperties = webappProperties;
+                    if (webappProperties.scripts && webappProperties.scripts.length > 0) {
+                        data.webappInject = true;
+                    }
+                }
+
+                cb();
+            });
+        }
         else if (data.desktopFiles.indexOf(header.name) > -1) {
             stream.on('data', function(fdata) {
                 var desktop = fdata.toString().split('\n');
@@ -148,8 +162,17 @@ function parseControl(control, data, icon, callback) {
     .on('finish', function() {
         parseData(data, {
             types: types,
+            architecture: manifest.architecture ? manifest.architecture : 'all',
+            framework: manifest.framework,
+            name: manifest.name,
+            title: manifest.title,
+            version: manifest.version,
             manifest: manifest,
             desktopFiles: desktopFiles,
+            webappProperties: null,
+            webappInject: false,
+            iconpath: null,
+            icon: null,
         }, icon, callback);
     });
 }
