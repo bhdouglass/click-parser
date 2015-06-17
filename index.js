@@ -154,7 +154,13 @@ function parseControl(control, data, icon, callback) {
     });
 }
 
-function parseClickPackage(filepath, icon, callback) {
+function parseClickPackage(filepath, iconOrCallback, callback) {
+    var icon = iconOrCallback;
+    if (typeof(icon) == 'function' && !callback) {
+        callback = icon;
+        icon = false;
+    }
+
     var data = null;
     var control = null;
 
