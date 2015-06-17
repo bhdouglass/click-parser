@@ -160,19 +160,29 @@ function parseControl(control, data, icon, callback) {
         callback(err);
     })
     .on('finish', function() {
+        var maintainerEmail = '';
+        if (manifest.maintainer) {
+            var match = manifest.maintainer.match(/<.*>/);
+            if (match && match.length == 1) {
+                maintainerEmail = match[0].replace('<', '').replace('>', '').trim();
+            }
+        }
+
         parseData(data, {
-            types: types,
             architecture: manifest.architecture ? manifest.architecture : 'all',
+            desktopFiles: desktopFiles,
             framework: manifest.framework,
+            icon: null,
+            iconpath: null,
+            maintainer: manifest.maintainer ? manifest.maintainer.replace(/<.*>/, '').trim() : '',
+            maintainerEmail: maintainerEmail,
+            manifest: manifest,
             name: manifest.name,
             title: manifest.title,
+            types: types,
             version: manifest.version,
-            manifest: manifest,
-            desktopFiles: desktopFiles,
-            webappProperties: null,
             webappInject: false,
-            iconpath: null,
-            icon: null,
+            webappProperties: null,
         }, icon, callback);
     });
 }
@@ -201,7 +211,12 @@ function parseClickPackage(filepath, iconOrCallback, callback) {
         callback('Malformed click package');
     }
     else {
-        parseControl(control, data, icon, callback);
+        parseControl(control, data, icon, function(err, data) {
+            delete data.iconpath;
+            delete data.desktopFiles;
+
+            callback(err, data);
+        });
     }
 }
 

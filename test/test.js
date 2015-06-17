@@ -11,10 +11,10 @@ describe('click-parser', function(){
 
                 assert.deepEqual(data, {
                     architecture: 'all',
-                    desktopFiles: ['./test-qml.desktop'],
                     framework: 'ubuntu-sdk-15.04',
                     icon: null,
-                    iconpath: 'test-qml.png',
+                    maintainer: 'Brian Douglass',
+                    maintainerEmail: 'bhdouglass@gmail.com',
                     manifest: {
                         architecture: 'all',
                         description: 'description of test-qml',
