@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=test-webapp
+Comment=webapp for test-webapp
+Type=Application
+Icon=test-webapp.png
+Exec=webapp-container  --webappModelSearchPath=. --store-session-cookies --enable-back-forward --store-session-cookies --webappUrlPatterns=http://example.com/* http://example.com %u
+Terminal=false
+X-Ubuntu-Touch=true
+

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=test-html5
+Exec=ubuntu-html5-app-launcher $@ --www=www --inspector
+Icon=test-html5.png
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
+

@@ -1,0 +1,15 @@
+{
+    "architecture": "@CLICK_ARCH@",
+    "description": "A simple Unity scope that accesses the network",
+    "framework": "ubuntu-sdk-15.04",
+    "hooks": {
+        "test-scope": {
+            "apparmor": "test-scope.apparmor",
+            "scope": "test-scope"
+        }
+    },
+    "maintainer": "Brian Douglass <bhdouglass@gmail.com>",
+    "name": "test-scope.bhdouglass",
+    "title": "test-scope",
+    "version": "0.1"
+}

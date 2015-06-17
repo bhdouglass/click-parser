@@ -1,0 +1,17 @@
+{
+    "name": "test-webapp.bhdouglass",
+    "description": "description of test-webapp",
+    "architecture": "all",
+    "title": "test-webapp",
+    "hooks": {
+        "test-webapp": {
+            "apparmor": "test-webapp.apparmor",
+            "desktop":  "test-webapp.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": "Brian Douglass <bhdouglass@gmail.com>",
+    "framework" : "ubuntu-sdk-14.10"
+}
+
+

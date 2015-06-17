@@ -1,0 +1,15 @@
+{
+    "architecture": "all",
+    "description": "Test ogra webapp",
+    "framework": "ubuntu-sdk-14.04",
+    "hooks": {
+        "google-plus": {
+            "apparmor": "app.json",
+            "desktop": "app.desktop"
+        }
+    },
+    "maintainer": "Brian Douglass <bhdouglass@gmail.com>",
+    "name": "test-ogra.bhdouglass",
+    "title": "test-ogra",
+    "version": "0.1"
+}

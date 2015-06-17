@@ -1,0 +1,17 @@
+{
+    "name": "test-qml.bhdouglass",
+    "description": "description of test-qml",
+    "architecture": "all",
+    "title": "test-qml",
+    "hooks": {
+        "test-qml": {
+            "apparmor": "test-qml.apparmor",
+            "desktop":  "test-qml.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": "Brian Douglass <bhdouglass@gmail.com>",
+    "framework" : "ubuntu-sdk-15.04"
+}
+
+

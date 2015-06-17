@@ -1,0 +1,17 @@
+{
+    "name": "test-html5.bhdouglass",
+    "description": "description of test-html5",
+    "architecture": "all",
+    "title": "test-html5",
+    "hooks": {
+        "test-html5": {
+            "apparmor": "test-html5.apparmor",
+            "desktop":  "test-html5.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": "Brian Douglass <bhdouglass@gmail.com>",
+    "framework" : "ubuntu-sdk-14.10"
+}
+
+

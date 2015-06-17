@@ -1,6 +1,6 @@
 {
   "name": "click-parser",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Extract data from Ubuntu's click packages",
   "main": "index.js",
   "scripts": {
