@@ -20,10 +20,8 @@ parse('/path/to/click/file.click', function(err, data) {
         /*
         {
             architecture: String of the click file's architecture (all, armhf, i386, or x86_64)
-            desktopFiles: Array of strings of desktop files within the click package
             framework: String of the click's framework (ex: ubuntu-sdk-15.04)
             icon: Path to the icon file (if the second argument to parse() is true)
-            iconpath: Path to the icon file within the click
             maintainer: The maintainers full name
             maintainerEmail: The maintainer's email address
             manifest: Object with the manifest.json file's contents
