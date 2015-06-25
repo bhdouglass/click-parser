@@ -26,6 +26,7 @@ parse('/path/to/click/file.click', function(err, data) {
             maintainerEmail: The maintainer's email address
             manifest: Object with the manifest.json file's contents
             name: String name of the click
+            permissions: Array of strings of the click's apparmor permissions
             title: String title of the click
             types: Array of strings of the package's types (application, webapp, or scope)
             version: String of the click's version
