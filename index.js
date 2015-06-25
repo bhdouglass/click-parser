@@ -90,6 +90,21 @@ function parseData(fileData, data, icon, callback) {
                 cb();
             });
         }
+        else if (header.name.substring(header.name.length - 9) == '.apparmor') {
+            stream.on('data', function(fdata) {
+                var apparmor = fdata.toString();
+                if (isJson(apparmor)) {
+                    apparmor = JSON.parse(apparmor);
+                    if (apparmor.policy_groups && apparmor.policy_groups.length > 0) {
+                        data.permissions = data.permissions.concat(apparmor.policy_groups.filter(function(permission) {
+                            return data.permissions.indexOf(permission) < 0;
+                        }));
+                    }
+                }
+
+                cb();
+            });
+        }
         else {
             cb();
         }
@@ -178,6 +193,7 @@ function parseControl(control, data, icon, callback) {
             maintainerEmail: maintainerEmail,
             manifest: manifest,
             name: manifest.name,
+            permissions: [],
             title: manifest.title,
             types: types,
             version: manifest.version,

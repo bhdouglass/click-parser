@@ -32,6 +32,7 @@ describe('click-parser', function(){
                         version: '0.1'
                     },
                     name: 'test-qml.bhdouglass',
+                    permissions: ['networking', 'webview'],
                     title: 'test-qml',
                     types: ['application'],
                     version: '0.1',
