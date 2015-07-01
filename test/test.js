@@ -11,6 +11,10 @@ describe('click-parser', function(){
 
                 assert.deepEqual(data, {
                     architecture: 'all',
+                    apparmor: {
+                        policy_groups: ['networking', 'webview'],
+                        policy_version: 1.3
+                    },
                     framework: 'ubuntu-sdk-15.04',
                     icon: null,
                     maintainer: 'Brian Douglass',

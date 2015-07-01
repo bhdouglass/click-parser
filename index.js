@@ -95,6 +95,7 @@ function parseData(fileData, data, icon, callback) {
                 var apparmor = fdata.toString();
                 if (isJson(apparmor)) {
                     apparmor = JSON.parse(apparmor);
+                    data.apparmor = apparmor;
                     if (apparmor.policy_groups && apparmor.policy_groups.length > 0) {
                         data.permissions = data.permissions.concat(apparmor.policy_groups.filter(function(permission) {
                             return data.permissions.indexOf(permission) < 0;
@@ -185,6 +186,7 @@ function parseControl(control, data, icon, callback) {
 
         parseData(data, {
             architecture: manifest.architecture ? manifest.architecture : 'all',
+            apparmor: null,
             desktopFiles: desktopFiles,
             framework: manifest.framework,
             icon: null,

@@ -20,6 +20,7 @@ parse('/path/to/click/file.click', function(err, data) {
         /*
         {
             architecture: String of the click file's architecture (all, armhf, i386, or x86_64)
+            apparmor: Object with the click's apparmor contents
             framework: String of the click's framework (ex: ubuntu-sdk-15.04)
             icon: Path to the icon file (if the second argument to parse() is true)
             maintainer: The maintainers full name
