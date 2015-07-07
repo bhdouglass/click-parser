@@ -5,13 +5,11 @@
     "title": "test-qml",
     "hooks": {
         "test-qml": {
-            "apparmor": "test-qml.apparmor",
-            "desktop":  "test-qml.desktop"
+            "apparmor": "test-qml.json",
+            "desktop": "test-qml.desktop"
         }
     },
     "version": "0.1",
     "maintainer": "Brian Douglass <bhdouglass@gmail.com>",
-    "framework" : "ubuntu-sdk-15.04"
+    "framework": "ubuntu-sdk-15.04"
 }
-
-

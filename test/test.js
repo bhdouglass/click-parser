@@ -25,7 +25,7 @@ describe('click-parser', function(){
                         framework: 'ubuntu-sdk-15.04',
                         hooks: {
                             'test-qml': {
-                                apparmor: 'test-qml.apparmor',
+                                apparmor: 'test-qml.json',
                                 desktop: 'test-qml.desktop'
                             }
                         },

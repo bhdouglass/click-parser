@@ -90,7 +90,7 @@ function parseData(fileData, data, icon, callback) {
                 cb();
             });
         }
-        else if (header.name.substring(header.name.length - 9) == '.apparmor') {
+        else if (data.apparmorFiles.indexOf(header.name) > -1) {
             stream.on('data', function(fdata) {
                 var apparmor = fdata.toString();
                 if (isJson(apparmor)) {
@@ -129,6 +129,7 @@ function parseControl(control, data, icon, callback) {
     var types = [];
     var manifest = {};
     var desktopFiles = [];
+    var apparmorFiles = [];
 
     streamifier.createReadStream(control)
     .pipe(zlib.Unzip())
@@ -155,6 +156,10 @@ function parseControl(control, data, icon, callback) {
                             }
                             else if (hook.scope) {
                                 types.push('scope');
+                            }
+
+                            if (hook.apparmor) {
+                                apparmorFiles.push('./' + hook.apparmor);
                             }
                         }
                     }
@@ -187,6 +192,7 @@ function parseControl(control, data, icon, callback) {
         parseData(data, {
             architecture: manifest.architecture ? manifest.architecture : 'all',
             apparmor: null,
+            apparmorFiles: apparmorFiles,
             desktopFiles: desktopFiles,
             framework: manifest.framework,
             icon: null,
@@ -232,6 +238,7 @@ function parseClickPackage(filepath, iconOrCallback, callback) {
         parseControl(control, data, icon, function(err, data) {
             delete data.iconpath;
             delete data.desktopFiles;
+            delete data.apparmorFiles;
 
             callback(err, data);
         });
