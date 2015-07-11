@@ -1,8 +1,8 @@
 {
   "name": "click-parser",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "description": "Extract data from Ubuntu's click packages",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "gulp"
   },
@@ -30,7 +30,8 @@
     "streamifier": "^0.1.1",
     "tar": "^2.1.1",
     "tar-stream": "^1.1.5",
-    "uuid": "^2.0.1"
+    "uuid": "^2.0.1",
+    "xml2json": "^0.7.1"
   },
   "devDependencies": {
     "gulp": "^3.9.0",

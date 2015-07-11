@@ -19,20 +19,29 @@ parse('/path/to/click/file.click', function(err, data) {
         console.log(data);
         /*
         {
+            apps: Array of detailed app objects
+                {
+                    name: String of the internal name of this app
+                    type: String of the apps type (app, webapp, scope, snappy, push)
+                    features: Array of String of the app's special features (content_hub, url_dispatcher, push_helper, account_service)
+                    desktop: Object of the app's desktop file (if one exists) (the keys are lowercase)
+                    apparmor: Object of the app's apparmor file
+                    contentHub: Object of the app's content hub file (if it exists)
+                    pushHelper: Object of the app's push helper file (if it exists)
+                    accountService: Object of the app's push helper file (translated from xml) (if it exists)
+                    webappProperties: Object of the app's webapp properties (if it exists)
+                    webappInject: Boolean, whether or not the webapp is injecting a js script
+                    hooks: Object of the hooks for this app listed in the click's manifest
+                }
             architecture: String of the click file's architecture (all, armhf, i386, or x86_64)
-            apparmor: Object with the click's apparmor contents
+            description: String of the click's description
             framework: String of the click's framework (ex: ubuntu-sdk-15.04)
             icon: Path to the icon file (if the second argument to parse() is true)
             maintainer: The maintainers full name
             maintainerEmail: The maintainer's email address
-            manifest: Object with the manifest.json file's contents
             name: String name of the click
-            permissions: Array of strings of the click's apparmor permissions
             title: String title of the click
-            types: Array of strings of the package's types (application, webapp, or scope)
             version: String of the click's version
-            webappInject: Boolean, whether or not the webapp is injecting a js script
-            webappProperties: Object with the webapp-properties.json file's content (if it exists)
         }
         */
     }

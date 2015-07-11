@@ -1,4 +1,4 @@
-var parse = require('../index.js');
+var parse = require('../src/index.js');
 var assert = require('assert');
 
 describe('click-parser', function(){
@@ -10,39 +10,47 @@ describe('click-parser', function(){
                 }
 
                 assert.deepEqual(data, {
+                    apps: [{
+                        name: 'test-qml',
+                        type: 'app',
+                        features: [],
+                        desktop: {
+                            name: 'test-qml',
+                            exec: 'qmlscene $@ Main.qml',
+                            icon: 'test-qml.png',
+                            terminal: 'false',
+                            type: 'Application',
+                            'x-ubuntu-touch': 'true',
+                        },
+                        apparmor: {
+                            policy_groups: [
+                                'networking',
+                                'webview'
+                            ],
+                            policy_version: 1.3
+                        },
+                        contentHub: {},
+                        urlDispatcher: {},
+                        pushHelper: {},
+                        accountService: {},
+                        webappProperties: {},
+                        webappInject: false,
+                        hooks: {
+                            apparmor: 'test-qml.json',
+                            desktop: 'test-qml.desktop',
+                        }
+                    }],
                     architecture: 'all',
-                    apparmor: {
-                        policy_groups: ['networking', 'webview'],
-                        policy_version: 1.3
-                    },
+                    description: 'description of test-qml',
                     framework: 'ubuntu-sdk-15.04',
                     icon: null,
                     maintainer: 'Brian Douglass',
                     maintainerEmail: 'bhdouglass@gmail.com',
-                    manifest: {
-                        architecture: 'all',
-                        description: 'description of test-qml',
-                        framework: 'ubuntu-sdk-15.04',
-                        hooks: {
-                            'test-qml': {
-                                apparmor: 'test-qml.json',
-                                desktop: 'test-qml.desktop'
-                            }
-                        },
-                        'installed-size': '38',
-                        maintainer: 'Brian Douglass <bhdouglass@gmail.com>',
-                        name: 'test-qml.bhdouglass',
-                        title: 'test-qml',
-                        version: '0.1'
-                    },
                     name: 'test-qml.bhdouglass',
-                    permissions: ['networking', 'webview'],
                     title: 'test-qml',
-                    types: ['application'],
                     version: '0.1',
-                    webappInject: false,
-                    webappProperties: null,
                 });
+
                 done();
             });
         });
@@ -55,7 +63,9 @@ describe('click-parser', function(){
                     throw err;
                 }
 
-                assert.deepEqual(data.types, ['application']);
+                assert.equal(data.apps.length, 1);
+                assert.equal(data.apps[0].type, 'app');
+
                 done();
             });
         });
@@ -68,7 +78,9 @@ describe('click-parser', function(){
                     throw err;
                 }
 
-                assert.deepEqual(data.types, ['scope']);
+                assert.equal(data.apps.length, 1);
+                assert.equal(data.apps[0].type, 'scope');
+
                 done();
             });
         });
@@ -81,8 +93,10 @@ describe('click-parser', function(){
                     throw err;
                 }
 
-                assert.deepEqual(data.types, ['webapp']);
-                assert.equal(data.webappInject, true);
+                assert.equal(data.apps.length, 1);
+                assert.equal(data.apps[0].type, 'webapp');
+                assert.equal(data.apps[0].webappInject, true);
+
                 done();
             });
         });
@@ -95,7 +109,9 @@ describe('click-parser', function(){
                     throw err;
                 }
 
-                assert.deepEqual(data.types, ['application']);
+                assert.equal(data.apps.length, 1);
+                assert.equal(data.apps[0].type, 'app');
+
                 done();
             });
         });
