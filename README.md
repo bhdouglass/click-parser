@@ -27,10 +27,12 @@ parse('/path/to/click/file.click', function(err, data) {
                     desktop: Object of the app's desktop file (if one exists) (the keys are lowercase)
                     apparmor: Object of the app's apparmor file
                     contentHub: Object of the app's content hub file (if it exists)
-                    pushHelper: Object of the app's push helper file (if it exists)
-                    accountService: Object of the app's push helper file (translated from xml) (if it exists)
+                    pushHelper: Object of the app's push helper file (translated from xml) (if it exists)
+                    accountApplication: Object of the app's account application file (translated from xml) (if it exists)
+                    accountService: Object of the app's account service file (translated from xml) (if it exists)
+                    urlDispatcher: Array of the app's url dispatcher file (if it exists)
                     webappProperties: Object of the app's webapp properties (if it exists)
-                    webappInject: Boolean, whether or not the webapp is injecting a js script
+                    webappInject: Boolean, whether or not the webapp is injecting a js script (only applicable to type == 'webapp')
                     hooks: Object of the hooks for this app listed in the click's manifest
                 }
             architecture: String of the click file's architecture (all, armhf, i386, or x86_64)

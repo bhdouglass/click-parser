@@ -5,8 +5,16 @@
     "title": "test-qml",
     "hooks": {
         "test-qml": {
-            "apparmor": "test-qml.json",
-            "desktop": "test-qml.desktop"
+            "apparmor": "apparmor.json",
+            "desktop": "test-qml.desktop",
+            "content-hub": "content-hub.json",
+            "urls": "url-dispatcher.json",
+            "account-application": "account-application.xml",
+            "account-service": "account-service.xml"
+        },
+        "test-qml-push-helper": {
+            "apparmor": "push-helper-apparmor.json",
+            "push-helper": "push-helper.json"
         }
     },
     "version": "0.1",

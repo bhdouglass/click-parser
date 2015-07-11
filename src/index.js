@@ -94,18 +94,20 @@ function parseDesktopFile(stream, callback) {
         var other = [];
         desktop.forEach(function(line) {
             var lline = line.toLowerCase().trim();
-            var pos = lline.indexOf('=');
-            if (pos > -1) {
-                var key = lline.substring(0, pos);
-                var value = line.substring(pos + 1);
-                data[key] = value;
-            }
-            else {
-                other.push(line);
+            if (lline != '[desktop entry]' && lline.length > 0) {
+                var pos = lline.indexOf('=');
+                if (pos > -1) {
+                    var key = lline.substring(0, pos);
+                    var value = line.substring(pos + 1);
+                    data[key] = value;
+                }
+                else {
+                    other.push(line);
+                }
             }
         });
 
-        if (other) {
+        if (other.length > 0) {
             data.other = other;
         }
 
@@ -170,6 +172,13 @@ function parseData(fileData, data, icon, callback) {
                 found = true;
                 parseXmlFile(stream, function(json) {
                     app.accountService = json ? json : {};
+                    cb();
+                });
+            }
+            else if (app.hooks['account-application'] && header.name == './' + app.hooks['account-application']) {
+                found = true;
+                parseXmlFile(stream, function(json) {
+                    app.accountApplication = json ? json : {};
                     cb();
                 });
             }

@@ -5,9 +5,10 @@ function App(name, hooks) {
     this.desktop = {};
     this.apparmor = {};
     this.contentHub = {};
-    this.urlDispatcher = {};
+    this.urlDispatcher = [];
     this.pushHelper = {};
     this.accountService = {};
+    this.accountApplication = {};
     this.webappProperties = {};
     this.webappInject = false;
     this.hooks = hooks;

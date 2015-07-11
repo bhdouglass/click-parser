@@ -13,31 +13,77 @@ describe('click-parser', function(){
                     apps: [{
                         name: 'test-qml',
                         type: 'app',
-                        features: [],
+                        features: ['content_hub', 'url_dispatcher', 'account_service'],
                         desktop: {
                             name: 'test-qml',
                             exec: 'qmlscene $@ Main.qml',
                             icon: 'test-qml.png',
                             terminal: 'false',
                             type: 'Application',
-                            'x-ubuntu-touch': 'true',
+                            'x-ubuntu-touch': 'true'
                         },
                         apparmor: {
-                            policy_groups: [
-                                'networking',
-                                'webview'
-                            ],
+                            policy_groups: ['networking', 'webview'],
                             policy_version: 1.3
                         },
-                        contentHub: {},
-                        urlDispatcher: {},
+                        contentHub: {
+                            source: ['pictures']
+                        },
+                        urlDispatcher: [{
+                            protocol: 'http',
+                            'domain-suffix': 'example.com'
+                        }],
                         pushHelper: {},
-                        accountService: {},
+                        accountService: {
+                            service: {
+                                name: 'test-qml',
+                                type: 'test-qml.bhdouglass',
+                                provider: 'facebook'
+                            }
+                        },
+                        accountApplication: {
+                            application: {
+                                services: {
+                                    service: {
+                                        id: 'test-qml.bhdouglass',
+                                        description: 'Post your pictures to Facebook'
+                                    }
+                                }
+                            }
+                        },
                         webappProperties: {},
                         webappInject: false,
                         hooks: {
-                            apparmor: 'test-qml.json',
+                            'account-application': 'account-application.xml',
+                            'account-service': 'account-service.xml',
+                            apparmor: 'apparmor.json',
+                            'content-hub': 'content-hub.json',
                             desktop: 'test-qml.desktop',
+                            urls: 'url-dispatcher.json'
+                        }
+                    }, {
+                        name: 'test-qml-push-helper',
+                        type: 'push',
+                        features: ['push_helper'],
+                        desktop: {},
+                        apparmor: {
+                            policy_groups: ['push-notification-client'],
+                            policy_version: 1.3,
+                            template: 'ubuntu-push-helper'
+                        },
+                        contentHub: {},
+                        urlDispatcher: {},
+                        pushHelper: {
+                            exec: 'pushHelper',
+                            app_id: 'test-qml.bhdouglass'
+                        },
+                        accountService: {},
+                        accountApplication: {},
+                        webappProperties: {},
+                        webappInject: false,
+                        hooks: {
+                            apparmor: 'push-helper-apparmor.json',
+                            'push-helper': 'push-helper.json'
                         }
                     }],
                     architecture: 'all',
@@ -48,7 +94,7 @@ describe('click-parser', function(){
                     maintainerEmail: 'bhdouglass@gmail.com',
                     name: 'test-qml.bhdouglass',
                     title: 'test-qml',
-                    version: '0.1',
+                    version: '0.1'
                 });
 
                 done();
@@ -96,6 +142,14 @@ describe('click-parser', function(){
                 assert.equal(data.apps.length, 1);
                 assert.equal(data.apps[0].type, 'webapp');
                 assert.equal(data.apps[0].webappInject, true);
+                assert.deepEqual(data.apps[0].webappProperties, {
+                    includes: ['http://example.com:*/*'],
+                    name: 'ExtendedWebappProperties',
+                    scripts: ['inject.js'],
+                    domain: '',
+                    homepage: '',
+                    'user-agent-override': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/39.0.2171.65 Chrome/39.0.2171.65 Safari/537.36'
+                });
 
                 done();
             });

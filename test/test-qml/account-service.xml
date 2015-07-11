@@ -1,0 +1,5 @@
+<service>
+    <name>test-qml</name>
+    <type>test-qml.bhdouglass</type>
+    <provider>facebook</provider>
+</service>

@@ -1,0 +1,7 @@
+<application>
+  <services>
+    <service id="test-qml.bhdouglass">
+      <description>Post your pictures to Facebook</description>
+    </service>
+  </services>
+</application>
