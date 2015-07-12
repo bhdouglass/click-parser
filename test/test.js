@@ -93,7 +93,10 @@ describe('click-parser', function(){
                     maintainer: 'Brian Douglass',
                     maintainerEmail: 'bhdouglass@gmail.com',
                     name: 'test-qml.bhdouglass',
+                    permissions: ['networking', 'webview', 'push-notification-client'],
                     title: 'test-qml',
+                    types: ['app', 'push'],
+                    urls: ['http://example.com'],
                     version: '0.1'
                 });
 

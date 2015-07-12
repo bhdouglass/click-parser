@@ -42,7 +42,10 @@ parse('/path/to/click/file.click', function(err, data) {
             maintainer: The maintainers full name
             maintainerEmail: The maintainer's email address
             name: String name of the click
+            permissions: Array of Strings of all the permissions of all the apps
             title: String title of the click
+            types: Array of Strings of the types of all the apps
+            urls: Array of Strings of the urls handled by all the apps
             version: String of the click's version
         }
         */
