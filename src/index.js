@@ -199,6 +199,10 @@ function parseData(fileData, data, icon, callback) {
                     cb();
                 });
             }
+            else if (header.name == './meta/package.yaml') {
+                data.snappy = true;
+                cb();
+            }
             else {
                 cb();
             }
@@ -231,6 +235,7 @@ function parseControl(control, fileData, icon, callback) {
         maintainerEmail: null,
         name: null,
         permissions: [],
+        snappy: false,
         title: null,
         types: [],
         urls: [],
@@ -341,6 +346,11 @@ function parseClickPackage(filepath, iconOrCallback, callback) {
     else {
         parseControl(control, data, icon, function(err, data) {
             data.apps.forEach(function(app) {
+                //There has got to be a better way to do this
+                if (app.type == 'app' && data.snappy) {
+                    app.type = 'snappy';
+                }
+
                 if (data.types.indexOf(app.type) == -1) {
                     data.types.push(app.type);
                 }
@@ -389,10 +399,11 @@ function parseClickPackage(filepath, iconOrCallback, callback) {
                 }
             });
 
-            delete data.webappProperties;
-            delete data.webappInject;
             delete data.iconpath;
             delete data.manifest;
+            delete data.snappy;
+            delete data.webappInject;
+            delete data.webappProperties;
 
             callback(err, data);
         });
