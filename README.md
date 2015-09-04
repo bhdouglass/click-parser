@@ -25,6 +25,7 @@ parse('/path/to/click/file.click', function(err, data) {
                     type: String of the apps type (app, webapp, scope, snappy, push)
                     features: Array of String of the app's special features (content_hub, url_dispatcher, push_helper, account_service)
                     desktop: Object of the app's desktop file (if one exists) (the keys are lowercase)
+                    scopeIni: Object of the scope's ini file (if one exists) (the keys are lowercase)
                     apparmor: Object of the app's apparmor file
                     contentHub: Object of the app's content hub file (if it exists)
                     pushHelper: Object of the app's push helper file (translated from xml) (if it exists)

@@ -60,7 +60,8 @@ describe('click-parser', function(){
                             'content-hub': 'content-hub.json',
                             desktop: 'test-qml.desktop',
                             urls: 'url-dispatcher.json'
-                        }
+                        },
+                        scopeIni: {},
                     }, {
                         name: 'test-qml-push-helper',
                         type: 'push',
@@ -84,7 +85,8 @@ describe('click-parser', function(){
                         hooks: {
                             apparmor: 'push-helper-apparmor.json',
                             'push-helper': 'push-helper.json'
-                        }
+                        },
+                        scopeIni: {},
                     }],
                     architecture: 'all',
                     description: 'description of test-qml',
@@ -129,6 +131,14 @@ describe('click-parser', function(){
 
                 assert.equal(data.apps.length, 1);
                 assert.equal(data.apps[0].type, 'scope');
+                assert.deepEqual(data.apps[0].scopeIni, {
+                    displayname: 'Test-scope Scope',
+                    description: 'This is a Test-scope scope',
+                    art: 'screenshot.png',
+                    author: 'Firstname Lastname',
+                    icon: 'icon.png',
+                    'pageheader.logo': 'logo.png'
+                });
 
                 done();
             });

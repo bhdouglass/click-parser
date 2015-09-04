@@ -86,7 +86,7 @@ function parseXmlFile(stream, callback) {
     });
 }
 
-function parseDesktopFile(stream, callback) {
+function parseIniFile(stream, callback) {
     stream.on('data', function(fdata) {
         var data = {};
         var desktop = fdata.toString().split('\n');
@@ -94,7 +94,7 @@ function parseDesktopFile(stream, callback) {
         var other = [];
         desktop.forEach(function(line) {
             var lline = line.toLowerCase().trim();
-            if (lline != '[desktop entry]' && lline.length > 0) {
+            if (!(lline[0] == '[' && lline[lline.length - 1] == ']') && lline.length > 0) {
                 var pos = lline.indexOf('=');
                 if (pos > -1) {
                     var key = lline.substring(0, pos);
@@ -122,9 +122,11 @@ function parseData(fileData, data, icon, callback) {
     .on('entry', function(header, stream, cb) {
         var found = false;
         data.apps.forEach(function(app) {
+            var scopeIni = data.name + '_' + app.name + '.ini';
+
             if (app.hooks.desktop && header.name == './' + app.hooks.desktop) {
                 found = true;
-                parseDesktopFile(stream, function(json) {
+                parseIniFile(stream, function(json) {
                     app.desktop = json ? json : {};
 
                     if (app.desktop.exec) {
@@ -179,6 +181,18 @@ function parseData(fileData, data, icon, callback) {
                 found = true;
                 parseXmlFile(stream, function(json) {
                     app.accountApplication = json ? json : {};
+                    cb();
+                });
+            }
+            else if (app.type == 'scope' && header.name.indexOf(scopeIni, header.name.length - scopeIni.length) !== -1) {
+                found = true;
+                parseIniFile(stream, function(json) {
+                    app.scopeIni = json ? json : {};
+
+                    if (app.scopeIni.icon) {
+                        data.iconpath = header.name.replace(scopeIni, app.scopeIni.icon).replace('./', ''); //Assume the icon is relative to the ini file
+                    }
+
                     cb();
                 });
             }
