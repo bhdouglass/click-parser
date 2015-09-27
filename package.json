@@ -6,6 +6,9 @@
   "scripts": {
     "test": "gulp"
   },
+  "bin": {
+    "click-parser": "bin/click-parser"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bhdouglass/click-parser.git"
@@ -15,7 +18,10 @@
     "ubuntu",
     "debian",
     "package",
-    "deb"
+    "deb",
+    "snap",
+    "snappy",
+    "scope"
   ],
   "author": "Brian Douglass",
   "license": "GPL-3.0",

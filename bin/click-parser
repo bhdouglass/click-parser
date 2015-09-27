@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+
+var parse = require('../src/index');
+
+if (process.argv.length != 3) {
+    console.error('Wrong number of arguments');
+    process.exit(1);
+}
+else {
+    parse(process.argv[2], function(err, data) {
+        if (err) {
+            console.error('Failed to parse: ' + err);
+        }
+        else {
+            console.log(JSON.stringify(data, null, 4));
+        }
+    });
+}
