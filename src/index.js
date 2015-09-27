@@ -225,6 +225,7 @@ function parseData(fileData, data, icon, callback) {
         stream.resume();
     })
     .on('error', function(err) {
+        console.error(err);
         callback(err);
     })
     .on('finish', function() {
@@ -268,7 +269,12 @@ function parseControl(control, fileData, icon, callback) {
                 if (isJson(manifest)) {
                     data.manifest = JSON.parse(manifest);
 
-                    if (!data.manifest.hooks || Object.keys(data.manifest.hooks).length === 0) {
+                    if (!data.manifest.hooks && data.manifest.type == 'oem') {
+                        var snappy = new App(data.manifest.name, {});
+                        snappy.type = 'snappy';
+                        data.apps.push(snappy);
+                    }
+                    else if (!data.manifest.hooks || Object.keys(data.manifest.hooks).length === 0) {
                         cb('Manifest file does not have any hooks in it');
                     }
                     else {
