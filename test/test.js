@@ -37,13 +37,13 @@ describe('click-parser', function(){
                         accountService: {
                             service: {
                                 name: [
-                                    "test-qml"
+                                    'test-qml'
                                 ],
                                 type: [
-                                    "test-qml.bhdouglass"
+                                    'test-qml.bhdouglass'
                                 ],
                                 provider: [
-                                    "facebook"
+                                    'facebook'
                                 ]
                             }
                         },
@@ -54,10 +54,10 @@ describe('click-parser', function(){
                                         service: [
                                             {
                                                 $: {
-                                                    id: "test-qml.bhdouglass"
+                                                    id: 'test-qml.bhdouglass'
                                                 },
                                                 description: [
-                                                    "Post your pictures to Facebook"
+                                                    'Post your pictures to Facebook'
                                                 ]
                                             }
                                         ]
