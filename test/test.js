@@ -36,19 +36,33 @@ describe('click-parser', function(){
                         pushHelper: {},
                         accountService: {
                             service: {
-                                name: 'test-qml',
-                                type: 'test-qml.bhdouglass',
-                                provider: 'facebook'
+                                name: [
+                                    "test-qml"
+                                ],
+                                type: [
+                                    "test-qml.bhdouglass"
+                                ],
+                                provider: [
+                                    "facebook"
+                                ]
                             }
                         },
                         accountApplication: {
                             application: {
-                                services: {
-                                    service: {
-                                        id: 'test-qml.bhdouglass',
-                                        description: 'Post your pictures to Facebook'
+                                services: [
+                                    {
+                                        service: [
+                                            {
+                                                $: {
+                                                    id: "test-qml.bhdouglass"
+                                                },
+                                                description: [
+                                                    "Post your pictures to Facebook"
+                                                ]
+                                            }
+                                        ]
                                     }
-                                }
+                                ]
                             }
                         },
                         webappProperties: {},

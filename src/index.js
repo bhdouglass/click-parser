@@ -7,24 +7,12 @@ var streamifier = require('streamifier');
 var tar = require('tar');
 var uuid = require('node-uuid');
 var path = require('path');
-var xml2json = require('xml2json');
+var xml2js = require('xml2js');
 
 function isJson(string) {
     var value = true;
     try {
         JSON.parse(string);
-    }
-    catch (e) {
-        value = false;
-    }
-
-    return value;
-}
-
-function isXml(string) {
-    var value = true;
-    try {
-        xml2json.toJson(string);
     }
     catch (e) {
         value = false;
@@ -77,12 +65,14 @@ function parseJsonFile(stream, callback) {
 function parseXmlFile(stream, callback) {
     stream.on('data', function(fdata) {
         var str = fdata.toString();
-        if (isXml(str)) {
-            callback(xml2json.toJson(str, {object: true}));
-        }
-        else {
-            callback();
-        }
+        xml2js.parseString(str, function(err, result) {
+            if (err) {
+                callback();
+            }
+            else {
+                callback(result);
+            }
+        });
     });
 }
 
