@@ -65,7 +65,12 @@ function parseJsonFile(stream, callback) {
 function parseXmlFile(stream, callback) {
     stream.on('data', function(fdata) {
         var str = fdata.toString();
-        xml2js.parseString(str, function(err, result) {
+        xml2js.parseString(str, {
+            explicitArray: false,
+            mergeAttrs: true,
+            normalizeTags: true,
+            normalize: true,
+        }, function(err, result) {
             if (err) {
                 callback();
             }
@@ -149,7 +154,7 @@ function parseData(fileData, data, icon, callback) {
             else if (app.hooks.urls && header.name == './' + app.hooks.urls) {
                 found = true;
                 parseJsonFile(stream, function(json) {
-                    app.urlDispatcher = json ? json : {};
+                    app.urlDispatcher = json ? json : [];
                     cb();
                 });
             }

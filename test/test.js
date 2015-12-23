@@ -36,33 +36,19 @@ describe('click-parser', function(){
                         pushHelper: {},
                         accountService: {
                             service: {
-                                name: [
-                                    'test-qml'
-                                ],
-                                type: [
-                                    'test-qml.bhdouglass'
-                                ],
-                                provider: [
-                                    'facebook'
-                                ]
+                                name: 'test-qml',
+                                type: 'test-qml.bhdouglass',
+                                provider: 'facebook'
                             }
                         },
                         accountApplication: {
                             application: {
-                                services: [
-                                    {
-                                        service: [
-                                            {
-                                                $: {
-                                                    id: 'test-qml.bhdouglass'
-                                                },
-                                                description: [
-                                                    'Post your pictures to Facebook'
-                                                ]
-                                            }
-                                        ]
+                                services: {
+                                    service: {
+                                        id: 'test-qml.bhdouglass',
+                                        description: 'Post your pictures to Facebook'
                                     }
-                                ]
+                                }
                             }
                         },
                         webappProperties: {},
@@ -87,7 +73,7 @@ describe('click-parser', function(){
                             template: 'ubuntu-push-helper'
                         },
                         contentHub: {},
-                        urlDispatcher: {},
+                        urlDispatcher: [],
                         pushHelper: {
                             exec: 'pushHelper',
                             app_id: 'test-qml.bhdouglass'
