@@ -1,6 +1,6 @@
 # Click Parser #
 
-Extract data from Ubuntu's click packages
+Extract data from Ubuntu's click & snappy packages
 
 ## Install ##
 
@@ -11,7 +11,7 @@ Extract data from Ubuntu's click packages
 ~~~
 var parse = require('click-parser');
 
-parse('/path/to/click/file.click', function(err, data) {
+parse('/path/to/click/file.snap', function(err, data) {
     if (err) {
         console.error(err);
     }
@@ -35,19 +35,22 @@ parse('/path/to/click/file.click', function(err, data) {
                     webappProperties: Object of the app's webapp properties (if it exists)
                     webappInject: Boolean, whether or not the webapp is injecting a js script (only applicable to type == 'webapp')
                     hooks: Object of the hooks for this app listed in the click's manifest
+                    daemon: String of the daemon type for this snap (or false)
+                    daemon: String of the command for this snap (or false)
                 }
-            architecture: String of the click file's architecture (all, armhf, i386, or x86_64)
-            description: String of the click's description
+            architecture: String of the package's architecture (all, armhf, i386, amd64, arm64)
+            description: String of the package's description
             framework: String of the click's framework (ex: ubuntu-sdk-15.04)
             icon: Path to the icon file (if the second argument to parse() is true)
             maintainer: The maintainers full name
             maintainerEmail: The maintainer's email address
-            name: String name of the click
+            name: String name of the package
             permissions: Array of Strings of all the permissions of all the apps
-            title: String title of the click
+            title: String title of the package
             types: Array of Strings of the types of all the apps
             urls: Array of Strings of the urls handled by all the apps
-            version: String of the click's version
+            version: String of the package's version
+            snappy_meta: Object of the snap's snap.yaml metadata file
         }
         */
     }
@@ -59,7 +62,7 @@ parse('/path/to/click/file.click', true, function(err, data) {});
 
 ## License ##
 
-Copyright (C) 2015 [Brian Douglass](http://bhdouglass.com/)
+Copyright (C) 2016 [Brian Douglass](http://bhdouglass.com/)
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License version 3, as published
 by the Free Software Foundation.
