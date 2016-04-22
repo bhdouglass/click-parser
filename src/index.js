@@ -8,6 +8,12 @@ var tar = require('tar');
 var uuid = require('node-uuid');
 var path = require('path');
 var xml2js = require('xml2js');
+var squashfs = require('squashfs-nodejs');
+var tmp = require('tmp');
+var yaml = require('js-yaml');
+var rimraf = require('rimraf');
+var readChunk = require('read-chunk');
+var fileType = require('file-type');
 
 function isJson(string) {
     var value = true;
@@ -234,7 +240,7 @@ function parseData(fileData, data, icon, callback) {
 }
 
 function parseControl(control, fileData, icon, callback) {
-    var data = {
+    var data = { //TODO make this an object and share it with the snappy parsing
         apps: [],
         architecture: 'all',
         description: '',
@@ -244,7 +250,8 @@ function parseControl(control, fileData, icon, callback) {
         maintainer: null,
         maintainerEmail: null,
         name: null,
-        permissions: [],
+        permissions: [], //TODO add read/write paths
+        snappy_meta: {},
         snappy: false,
         title: null,
         types: [],
@@ -360,69 +367,186 @@ function parseClickPackage(filepath, iconOrCallback, callback) {
     }
     else {
         parseControl(control, data, icon, function(err, data) {
-            data.apps.forEach(function(app) {
-                //There has got to be a better way to do this
-                if (app.type == 'app' && data.snappy) {
-                    app.type = 'snappy';
-                }
+            if (err) {
+                callback(err);
+            }
+            else if (!data) {
+                callback('Control data is undefined');
+            }
+            else {
+                data.apps.forEach(function(app) {
+                    //Check for legacy snappy apps
+                    if (app.type == 'app' && data.snappy) {
+                        app.type = 'snappy';
+                    }
 
-                if (data.types.indexOf(app.type) == -1) {
-                    data.types.push(app.type);
-                }
+                    if (data.types.indexOf(app.type) == -1) {
+                        data.types.push(app.type);
+                    }
 
-                if (Object.keys(app.contentHub).length > 0) {
-                    app.features.push('content_hub');
-                }
+                    if (Object.keys(app.contentHub).length > 0) {
+                        app.features.push('content_hub');
+                    }
 
-                if (Object.keys(app.urlDispatcher).length > 0) {
-                    app.features.push('url_dispatcher');
-                }
+                    if (Object.keys(app.urlDispatcher).length > 0) {
+                        app.features.push('url_dispatcher');
+                    }
 
-                if (Object.keys(app.pushHelper).length > 0) {
-                    app.features.push('push_helper');
-                }
+                    if (Object.keys(app.pushHelper).length > 0) {
+                        app.features.push('push_helper');
+                    }
 
-                if (Object.keys(app.accountService).length > 0) {
-                    app.features.push('account_service');
-                }
+                    if (Object.keys(app.accountService).length > 0) {
+                        app.features.push('account_service');
+                    }
 
-                if (app.type == 'webapp') {
-                    app.webappProperties = data.webappProperties;
-                    app.webappInject = data.webappInject;
-                }
+                    if (app.type == 'webapp') {
+                        app.webappProperties = data.webappProperties;
+                        app.webappInject = data.webappInject;
+                    }
 
-                if (app.apparmor && app.apparmor.policy_groups) {
-                    data.permissions = data.permissions.concat(app.apparmor.policy_groups.filter(function(permission) {
-                        return data.permissions.indexOf(permission) < 0;
-                    }));
-                }
+                    if (app.apparmor && app.apparmor.policy_groups) {
+                        data.permissions = data.permissions.concat(app.apparmor.policy_groups.filter(function(permission) {
+                            return data.permissions.indexOf(permission) < 0;
+                        }));
+                    }
 
-                if (app.urlDispatcher && Array.isArray(app.urlDispatcher)) {
-                    app.urlDispatcher.forEach(function(ud) {
-                        var url = '';
-                        if (ud.protocol) {
-                            url = ud.protocol + '://';
-                            if (ud['domain-suffix']) {
-                                url += ud['domain-suffix'];
+                    if (app.urlDispatcher && Array.isArray(app.urlDispatcher)) {
+                        app.urlDispatcher.forEach(function(ud) {
+                            var url = '';
+                            if (ud.protocol) {
+                                url = ud.protocol + '://';
+                                if (ud['domain-suffix']) {
+                                    url += ud['domain-suffix'];
+                                }
+
+                                if (data.urls.indexOf(url) == -1) {
+                                    data.urls.push(url);
+                                }
+                            }
+                        });
+                    }
+                });
+
+                delete data.iconpath;
+                delete data.manifest;
+                delete data.snappy;
+                delete data.webappInject;
+                delete data.webappProperties;
+
+                callback(null, data);
+            }
+        });
+    }
+}
+
+function parseSnappyPackage(filepath, iconOrCallback, callback) {
+    var icon = iconOrCallback;
+    if (typeof(icon) == 'function' && !callback) {
+        callback = icon;
+        icon = false;
+    }
+
+    tmp.dir(function(err, path, cleanupCallback) {
+        if (err) {
+            callback(err);
+        }
+        else {
+            squashfs.unsquashfs(filepath, path + '/snap', function(err) {
+                if (err) {
+                    callback(err);
+                }
+                else {
+                    fs.readFile(path + '/snap/meta/snap.yaml', function(err, contents) {
+                        if (err) {
+                            rimraf(path + '/snap', function() {
+                                cleanupCallback();
+
+                                callback('Malformed or missing snap.yaml file (' + err + ')');
+                            });
+                        }
+                        else {
+                            var json = yaml.safeLoad(contents);
+
+                            var data = {
+                                apps: [],
+                                architecture: json.architectures ? json.architectures : [],
+                                description: json.description ? json.description : null,
+                                framework: null, //Snaps don't have frameworks
+                                icon: null,
+                                maintainer: null, //Snaps don't seem to have maintainer names
+                                maintainerEmail: json.vendor ? json.vendor : null,
+                                name: json.name ? json.name : null,
+                                permissions: [],
+                                snappy_meta: json,
+                                title: json.name ? json.name : null,
+                                types: ['snappy'],
+                                urls: [], //Snaps don't have urls
+                                version: json.version ? json.version : null,
+                            };
+
+                            if (json.apps) {
+                                for (var name in json.apps) {
+                                    var snappy = new App(name, {});
+                                    snappy.daemon = json.apps[name].daemon ? json.apps[name].daemon : false;
+                                    snappy.command = json.apps[name].command ? json.apps[name].command : false;
+
+                                    //TODO handle more advanced cases
+                                    if (json.apps[name].plugs) {
+                                        for (var index in json.apps[name].plugs) {
+                                            if (data.permissions.indexOf(json.apps[name].plugs[index]) == -1) {
+                                                data.permissions.push(json.apps[name].plugs[index]);
+                                            }
+                                        }
+                                    }
+
+                                    data.apps.push(snappy);
+                                }
                             }
 
-                            if (data.urls.indexOf(url) == -1) {
-                                data.urls.push(url);
+                            if (icon && json.icon) {
+                                var input = path.join(path, 'snap', json.icon);
+                                var output = '/tmp/' + uuid.v4() + path.extname(json.icon).toLowerCase();
+
+                                fs.rename(input, output, function(err) {
+                                    if (err) {
+                                        rimraf(path + '/snap', function() {
+                                            cleanupCallback();
+
+                                            callback('Failed to extract icon (' + err + ')', data);
+                                        });
+                                    }
+                                    else {
+                                        data.icon = output;
+                                        callback(null, data);
+                                    }
+                                });
+                            }
+                            else {
+                                rimraf(path + '/snap', function() {
+                                    cleanupCallback();
+
+                                    callback(null, data);
+                                });
                             }
                         }
                     });
                 }
             });
+        }
+    });
+}
 
-            delete data.iconpath;
-            delete data.manifest;
-            delete data.snappy;
-            delete data.webappInject;
-            delete data.webappProperties;
+function parsePackage(filepath, iconOrCallback, callback) {
+    var buf = readChunk.sync(filepath, 0, 262);
+    var ft = fileType(buf);
 
-            callback(err, data);
-        });
+    if (ft && ft.ext == 'deb') { //Click packages and old snaps are just debian files in disguise
+        parseClickPackage(filepath, iconOrCallback, callback);
+    }
+    else {
+        parseSnappyPackage(filepath, iconOrCallback, callback);
     }
 }
 
-module.exports = parseClickPackage;
+module.exports = parsePackage;

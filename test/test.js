@@ -62,6 +62,8 @@ describe('click-parser', function(){
                             urls: 'url-dispatcher.json'
                         },
                         scopeIni: {},
+                        daemon: false,
+                        command: false,
                     }, {
                         name: 'test-qml-push-helper',
                         type: 'push',
@@ -87,6 +89,8 @@ describe('click-parser', function(){
                             'push-helper': 'push-helper.json'
                         },
                         scopeIni: {},
+                        daemon: false,
+                        command: false,
                     }],
                     architecture: 'all',
                     description: 'description of test-qml',
@@ -99,7 +103,8 @@ describe('click-parser', function(){
                     title: 'test-qml',
                     types: ['app', 'push'],
                     urls: ['http://example.com'],
-                    version: '0.1'
+                    version: '0.1',
+                    snappy_meta: {}
                 });
 
                 done();
@@ -178,6 +183,82 @@ describe('click-parser', function(){
 
                 assert.equal(data.apps.length, 1);
                 assert.equal(data.apps[0].type, 'app');
+
+                done();
+            });
+        });
+    });
+});
+
+describe('click-parser (snappy)', function(){
+    describe('snappy package', function(){
+        it('should parse without error', function(done) {
+            parse(__dirname + '/open-uapp-tool.snap', function(err, data) {
+                if (err) {
+                    throw err;
+                }
+
+                assert.deepEqual(data, {
+                    apps: [{
+                        name: 'open-uapp',
+                        type: 'app',
+                        features: [],
+                        desktop: {},
+                        scopeIni: {},
+                        apparmor: {},
+                        contentHub: {},
+                        urlDispatcher: [],
+                        pushHelper: {},
+                        accountService: {},
+                        accountApplication: {},
+                        webappProperties: {},
+                        webappInject: false,
+                        hooks: {},
+                        daemon: false,
+                        command: 'command-open-uapp.wrapper'
+                    }],
+                    architecture: ['amd64', 'armhf'],
+                    description: 'Open uapp tool',
+                    framework: null,
+                    icon: null,
+                    maintainer: null,
+                    maintainerEmail: null,
+                    name: 'open-uapp',
+                    permissions: ['network', 'network-bind'],
+                    snappy_meta: {
+                        apps: {
+                            'open-uapp': {
+                                command: 'command-open-uapp.wrapper',
+                                plugs: ['network', 'network-bind']
+                            }
+                        },
+                        architectures: ['amd64', 'armhf'],
+                        description: 'Open uapp tool',
+                        name: 'open-uapp',
+                        summary: 'Open uapp tool',
+                        version: 0.1
+                    },
+                    title: 'open-uapp',
+                    types: ['snappy'],
+                    urls: [],
+                    version: 0.1
+                });
+
+                done();
+            });
+        });
+    });
+
+    describe('snappy daemon package', function(){
+        it('should parse without error', function(done) {
+            parse(__dirname + '/tor-middle-relay.chadmiller.snap', function(err, data) {
+                if (err) {
+                    throw err;
+                }
+
+                assert.equal(data.apps.length, 1);
+                assert.equal(data.apps[0].daemon, 'simple');
+                assert.equal(data.apps[0].command, 'command-daemon.wrapper');
 
                 done();
             });

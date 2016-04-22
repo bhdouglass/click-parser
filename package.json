@@ -1,7 +1,7 @@
 {
   "name": "click-parser",
-  "version": "2.4.0",
-  "description": "Extract data from Ubuntu's click packages",
+  "version": "3.0.0",
+  "description": "Extract data from Ubuntu's click & snappy packages",
   "main": "src/index.js",
   "scripts": {
     "test": "gulp"
@@ -21,7 +21,8 @@
     "deb",
     "snap",
     "snappy",
-    "scope"
+    "scope",
+    "snapcraft"
   ],
   "author": "Brian Douglass",
   "license": "GPL-3.0",
@@ -31,11 +32,17 @@
   "homepage": "https://github.com/bhdouglass/click-parser#readme",
   "dependencies": {
     "ar": "0.0.1",
+    "file-type": "^3.8.0",
+    "js-yaml": "^3.6.0",
     "node-uuid": "^1.4.3",
     "path": "^0.11.14",
+    "read-chunk": "^2.0.0",
+    "rimraf": "^2.5.2",
+    "squashfs-nodejs": "^1.0.5",
     "streamifier": "^0.1.1",
     "tar": "^2.1.1",
     "tar-stream": "^1.1.5",
+    "tmp": "0.0.28",
     "uuid": "^2.0.1",
     "xml2js": "^0.4.15"
   },

@@ -13,6 +13,8 @@ function App(name, hooks) {
     this.webappProperties = {};
     this.webappInject = false;
     this.hooks = hooks;
+    this.daemon = false; //For snappy packages
+    this.command = false; //For snappy packages
 }
 
 exports.App = App;
