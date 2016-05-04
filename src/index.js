@@ -14,6 +14,7 @@ var yaml = require('js-yaml');
 var rimraf = require('rimraf');
 var readChunk = require('read-chunk');
 var fileType = require('file-type');
+var minimist = require('minimist')
 
 function isJson(string) {
     var value = true;
@@ -132,7 +133,29 @@ function parseData(fileData, data, icon, callback) {
 
                     if (app.desktop.exec) {
                         if (app.desktop.exec.indexOf('webapp-container') === 0) {
-                            app.type = 'webapp';
+                            /*
+                            Check the arguments to webapp-container, if they contain
+                            an external url as the main url the assume it's a webapp.
+                            */
+
+                            var webapp = false;
+                            var exec = app.desktop.exec.replace('  ', ' ').replace('webapp-container', '').trim();
+                            var args = minimist(exec.split(' '), {default: {}});
+
+                            if (args && args._) {
+                                for (index in args._) {
+                                    if (
+                                        args._[index].substring(0, 7) == 'http://' ||
+                                        args._[index].substring(0, 8) == 'https://'
+                                    ) {
+                                        webapp = true;
+                                    }
+                                }
+                            }
+
+                            if (webapp) {
+                                app.type = 'webapp';
+                            }
                         }
                     }
 
