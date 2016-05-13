@@ -144,10 +144,10 @@ function parseData(fileData, data, icon, callback) {
 
                             if (args && args._) {
                                 for (index in args._) {
-                                    if (
+                                    if (args._[index] && (
                                         args._[index].substring(0, 7) == 'http://' ||
                                         args._[index].substring(0, 8) == 'https://'
-                                    ) {
+                                    )) {
                                         webapp = true;
                                     }
                                 }
