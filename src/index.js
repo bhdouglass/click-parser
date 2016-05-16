@@ -140,7 +140,10 @@ function parseData(fileData, data, icon, callback) {
 
                             var webapp = false;
                             var exec = app.desktop.exec.replace('  ', ' ').replace('webapp-container', '').trim();
-                            var args = minimist(exec.split(' '), {default: {}});
+
+                            //Match spaces not encased in quotes: http://stackoverflow.com/a/16261693
+                            var exec_split = exec.match(/(?:[^\s"]+|"[^"]*")+/g);
+                            var args = minimist(exec_split, {default: {}});
 
                             if (args && args._) {
                                 for (index in args._) {
