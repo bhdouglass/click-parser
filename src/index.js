@@ -14,7 +14,7 @@ var yaml = require('js-yaml');
 var rimraf = require('rimraf');
 var readChunk = require('read-chunk');
 var fileType = require('file-type');
-var minimist = require('minimist')
+var minimist = require('minimist');
 
 function isJson(string) {
     var value = true;
@@ -146,7 +146,7 @@ function parseData(fileData, data, icon, callback) {
                             var args = minimist(exec_split, {default: {}});
 
                             if (args && args._) {
-                                for (index in args._) {
+                                for (var index in args._) {
                                     if (args._[index] && (
                                         args._[index].substring(0, 7) == 'http://' ||
                                         args._[index].substring(0, 8) == 'https://'
@@ -435,6 +435,10 @@ function parseClickPackage(filepath, iconOrCallback, callback) {
                         data.permissions = data.permissions.concat(app.apparmor.policy_groups.filter(function(permission) {
                             return data.permissions.indexOf(permission) < 0;
                         }));
+                    }
+
+                    if (app.apparmor && app.apparmor.template == 'unconfined') {
+                        data.permissions.push('unconfined');
                     }
 
                     if (app.urlDispatcher && Array.isArray(app.urlDispatcher)) {
