@@ -1,6 +1,6 @@
 {
   "name": "click-parser",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "Extract data from Ubuntu's click & snappy packages",
   "main": "src/index.js",
   "scripts": {
@@ -45,7 +45,8 @@
     "tar-stream": "^1.1.5",
     "tmp": "0.0.28",
     "uuid": "^2.0.1",
-    "xml2js": "^0.4.15"
+    "xml2js": "^0.4.15",
+    "yargs": "^4.7.1"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
