@@ -1,17 +1,28 @@
-# Click Parser #
+# Click Parser
 
-Extract data from Ubuntu's click & snappy packages
+Extract data from Ubuntu's click & snap packages
 
-## Install ##
+## Install
+
+### NodeJS
 
 `npm install --save click-parser`
 
-## Usage ##
+### CLI
 
+`npm install -g click-parser`
+
+OR as a [snap](https://uappexplorer.com/app/click-parser.bhdouglass)
+
+`snap install click-parser`
+
+## Usage
+
+### NodeJS
 ~~~
 var parse = require('click-parser');
 
-parse('/path/to/click/file.snap', function(err, data) {
+parse('//path/to/click/or/snap', function(err, data) {
     if (err) {
         console.error(err);
     }
@@ -60,7 +71,11 @@ parse('/path/to/click/file.snap', function(err, data) {
 parse('/path/to/click/file.click', true, function(err, data) {});
 ~~~
 
-## License ##
+### CLI
+
+`click-parser /path/to/click/or/snap`
+
+## License
 
 Copyright (C) 2016 [Brian Douglass](http://bhdouglass.com/)
 
