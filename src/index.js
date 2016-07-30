@@ -29,6 +29,11 @@ function isJson(string) {
 }
 
 function extractIcon(fileData, data, callback) {
+    var iconpath = data.iconpath;
+    if (iconpath.indexOf('./') !== 0) {
+        iconpath = './' + data.iconpath;
+    }
+
     var write = '/tmp/' + uuid.v4() + path.extname(data.iconpath).toLowerCase();
     var f = fs.createWriteStream(write)
     .on('finish', function() {
@@ -45,7 +50,7 @@ function extractIcon(fileData, data, callback) {
     .pipe(zlib.Unzip())
     .pipe(tar.Parse())
     .on('entry', function(entry) {
-        if (entry.path == './' + data.iconpath) {
+        if (entry.path == iconpath) {
             entry.pipe(f);
             found = true;
         }
