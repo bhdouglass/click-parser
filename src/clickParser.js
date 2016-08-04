@@ -107,6 +107,8 @@ function parseIniFile(stream, callback) {
 }
 
 function parseData(fileData, data, icon, callback) {
+    var potentialOgraWebapp = false;
+
     streamifier.createReadStream(fileData)
     .pipe(zlib.Unzip())
     .pipe(tarstream.extract())
@@ -207,6 +209,47 @@ function parseData(fileData, data, icon, callback) {
 
                     if (app.scopeIni.icon) {
                         data.iconpath = header.name.replace(scopeIni, app.scopeIni.icon).replace('./', ''); //Assume the icon is relative to the ini file
+                    }
+
+                    cb();
+                });
+            }
+            else if ((app.type == 'app' || app.type == 'webapp+') && header.name == './config.js') {
+                //Detect the Ogra's alternate webapp container http://bazaar.launchpad.net/~ogra/alternate-webapp-container/trunk/files
+                //Detect both the presence of a config.js file and Main.qml file with certain parameters
+
+                stream.on('data', function(fdata) {
+                    var str = fdata.toString();
+
+                    if (
+                        str.indexOf('var webappName') >= 0 &&
+                        str.indexOf('var webappUrl') >= 0 &&
+                        str.indexOf('var webappUrlPattern') >= 0
+                    ) {
+                        if (potentialOgraWebapp) {
+                            app.type = 'webapp+';
+                        }
+                        else {
+                            potentialOgraWebapp = true;
+                        }
+                    }
+
+                    cb();
+                });
+            }
+            else if ((app.type == 'app' || app.type == 'webapp+') && header.name == './qml/Main.qml') {
+                //Detect the Ogra's alternate webapp container http://bazaar.launchpad.net/~ogra/alternate-webapp-container/trunk/files
+
+                stream.on('data', function(fdata) {
+                    var str = fdata.toString();
+
+                    if (str.indexOf('WebView') >= 0) {
+                        if (potentialOgraWebapp) {
+                            app.type = 'webapp+';
+                        }
+                        else {
+                            potentialOgraWebapp = true;
+                        }
                     }
 
                     cb();

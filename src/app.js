@@ -1,6 +1,6 @@
 function App(name, hooks) {
     this.name = name;
-    this.type = 'app'; //app, webapp, scope, snappy, push
+    this.type = 'app'; //app, webapp, scope, snappy, push, webapp+
     this.features = []; //content_hub, url_dispatcher, push_helper, account_service
     this.desktop = {};
     this.scopeIni = {};

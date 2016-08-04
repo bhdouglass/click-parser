@@ -182,7 +182,7 @@ describe('click-parser', function(){
                 }
 
                 assert.equal(data.apps.length, 1);
-                assert.equal(data.apps[0].type, 'app');
+                assert.equal(data.apps[0].type, 'webapp+');
 
                 done();
             });
