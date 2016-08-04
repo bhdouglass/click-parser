@@ -17,4 +17,4 @@ function App(name, hooks) {
     this.command = false; //For snappy packages
 }
 
-exports.App = App;
+module.exports = App;
