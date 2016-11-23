@@ -4,7 +4,7 @@ var fs = require('fs');
 var rimraf = require('rimraf');
 var squashfs = require('squashfs-nodejs');
 var tmp = require('tmp');
-var uuid = require('node-uuid');
+var uuid = require('uuid');
 var yaml = require('js-yaml');
 
 module.exports = function parseSnapPackage(filepath, iconOrCallback, callback) {
