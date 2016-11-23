@@ -8,7 +8,7 @@ var path = require('path');
 var streamifier = require('streamifier');
 var tar = require('tar');
 var tarstream = require('tar-stream');
-var uuid = require('node-uuid');
+var uuid = require('uuid');
 var xml2js = require('xml2js');
 var zlib = require('zlib');
 
