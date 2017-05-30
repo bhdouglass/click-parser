@@ -88,8 +88,8 @@ function parseIniFile(stream, callback) {
             if (!(lline[0] == '[' && lline[lline.length - 1] == ']') && lline.length > 0) {
                 var pos = lline.indexOf('=');
                 if (pos > -1) {
-                    var key = lline.substring(0, pos);
-                    var value = line.substring(pos + 1);
+                    var key = lline.substring(0, pos).trim();
+                    var value = line.substring(pos + 1).trim();
                     data[key] = value;
                 }
                 else {
@@ -288,7 +288,7 @@ function parseData(fileData, data, icon, callback) {
         callback(err);
     })
     .on('finish', function() {
-        if (icon) {
+        if (icon && data.iconpath) {
             extractIcon(fileData, data, callback);
         }
         else {

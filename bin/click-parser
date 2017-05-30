@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var parse = require('../src/index');
-var argv = require('yargs').alias('v', 'version').alias('h', 'help').argv;
+var argv = require('yargs').alias('v', 'version').alias('h', 'help').alias('i', 'icon').argv;
 
 if (argv.version || argv.help) {
     var pkg = require('../package.json');
@@ -18,7 +18,7 @@ else if (argv._.length != 1) {
     process.exit(1);
 }
 else {
-    parse(process.argv[2], function(err, data) {
+    parse(process.argv[2], !!argv['icon'], function(err, data) {
         if (err) {
             console.error('Failed to parse: ' + err);
             process.exit(1);
