@@ -138,10 +138,13 @@ function parseData(fileData, data, icon, callback) {
 
                             if (args && args._) {
                                 for (var index in args._) {
-                                    if (args._[index] && (
-                                        args._[index].substring(0, 7) == 'http://' ||
-                                        args._[index].substring(0, 8) == 'https://'
-                                    )) {
+                                    if (
+                                        typeof args._[index] === 'string' &&
+                                        args._[index] && (
+                                            args._[index].substring(0, 7) == 'http://' ||
+                                            args._[index].substring(0, 8) == 'https://'
+                                        )
+                                    ) {
                                         webapp = true;
                                     }
                                 }
