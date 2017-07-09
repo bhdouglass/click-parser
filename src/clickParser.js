@@ -327,8 +327,12 @@ function parseControl(control, fileData, icon, callback) {
     .pipe(tarstream.extract())
     .on('entry', function(header, stream, cb) {
         if (header.name == './manifest') {
+            var manifest = '';
             stream.on('data', function(fdata) {
-                var manifest = fdata.toString();
+                manifest += fdata.toString();
+            });
+
+            stream.on('end', function() {
                 if (utils.isJson(manifest)) {
                     data.manifest = JSON.parse(manifest);
 
