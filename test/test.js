@@ -104,7 +104,8 @@ describe('click-parser', function(){
                     types: ['app', 'push'],
                     urls: ['http://example.com'],
                     version: '0.1',
-                    snappy_meta: {}
+                    snappy_meta: {},
+                    languages: [],
                 });
 
                 done();
@@ -241,7 +242,7 @@ describe('click-parser (snappy)', function(){
                     title: 'open-uapp',
                     types: ['snappy'],
                     urls: [],
-                    version: 0.1
+                    version: 0.1,
                 });
 
                 done();

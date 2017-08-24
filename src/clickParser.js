@@ -279,6 +279,16 @@ function parseData(fileData, data, icon, callback) {
                 data.snappy = true;
                 cb();
             }
+            else if (header.name.indexOf('LC_MESSAGES') >= 0 && header.name.indexOf('.mo') >= 0) {
+                var lang = header.name.replace('./share/locale/', '');
+                lang = lang.substring(0, lang.indexOf('/LC_MESSAGES'));
+
+                if (data.languages.indexOf(lang) == -1) {
+                    data.languages.push(lang);
+                }
+
+                cb();
+            }
             else {
                 cb();
             }
@@ -320,6 +330,7 @@ function parseControl(control, fileData, icon, callback) {
         version: null,
         webappInject: false,
         webappProperties: {},
+        languages: [],
     };
 
     streamifier.createReadStream(control)
