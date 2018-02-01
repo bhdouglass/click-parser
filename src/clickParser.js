@@ -11,6 +11,7 @@ var tarstream = require('tar-stream');
 var uuid = require('uuid');
 var xml2js = require('xml2js');
 var zlib = require('zlib');
+var utf8 = require('utf8');
 
 function extractIcon(fileData, data, callback) {
     var iconpath = data.iconpath;
@@ -395,11 +396,15 @@ function parseControl(control, fileData, icon, callback) {
     })
     .on('finish', function() {
         var maintainerEmail = '';
+        var maintainer = '';
         if (data.manifest.maintainer) {
             var match = data.manifest.maintainer.match(/<.*>/);
             if (match && match.length == 1) {
                 maintainerEmail = match[0].replace('<', '').replace('>', '').trim();
             }
+
+            maintainer = data.manifest.maintainer.replace(/<.*>/, '').trim();
+            maintainer = utf8.decode(maintainer);  // Ensure that special characters are properly encoded
         }
 
         if (data.manifest.architecture) {
@@ -408,7 +413,7 @@ function parseControl(control, fileData, icon, callback) {
 
         data.description = data.manifest.description;
         data.framework = data.manifest.framework;
-        data.maintainer = data.manifest.maintainer ? data.manifest.maintainer.replace(/<.*>/, '').trim() : '';
+        data.maintainer = maintainer;
         data.maintainerEmail = maintainerEmail;
         data.name = data.manifest.name;
         data.title = data.manifest.title;
