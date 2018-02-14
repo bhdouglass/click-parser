@@ -3,3 +3,4 @@ node_modules
 test
 .jshintrc
 gulpfile.js
+*.click

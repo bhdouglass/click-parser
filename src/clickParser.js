@@ -404,7 +404,14 @@ function parseControl(control, fileData, icon, callback) {
             }
 
             maintainer = data.manifest.maintainer.replace(/<.*>/, '').trim();
-            maintainer = utf8.decode(maintainer);  // Ensure that special characters are properly encoded
+            try {
+                maintainer = utf8.decode(maintainer);  // Ensure that special characters are properly encoded
+            }
+            catch (e) {
+                if (e.message != 'Invalid UTF-8 detected') {
+                    throw e;
+                }
+            }
         }
 
         if (data.manifest.architecture) {
