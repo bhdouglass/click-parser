@@ -408,7 +408,11 @@ function parseControl(control, fileData, icon, callback) {
                 maintainer = utf8.decode(maintainer);  // Ensure that special characters are properly encoded
             }
             catch (e) {
-                if (e.message != 'Invalid UTF-8 detected' && e.message != 'Invalid continuation byte') {
+                if (
+                    e.message != 'Invalid UTF-8 detected' &&
+                    e.message != 'Invalid continuation byte' &&
+                    e.message != 'Invalid byte index'
+                ) {
                     throw e;
                 }
             }
