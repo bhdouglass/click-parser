@@ -114,6 +114,8 @@ function parseData(fileData, data, icon, callback) {
     .pipe(zlib.Unzip())
     .pipe(tarstream.extract())
     .on('entry', function(header, stream, cb) {
+        data.files.push(header.name.replace('./', ''));
+
         var found = false;
         data.apps.forEach(function(app) {
             var scopeIni = data.name + '_' + app.name + '.ini';
@@ -332,6 +334,7 @@ function parseControl(control, fileData, icon, callback) {
         webappInject: false,
         webappProperties: {},
         languages: [],
+        files: [],
     };
 
     streamifier.createReadStream(control)
